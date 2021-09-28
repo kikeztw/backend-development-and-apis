@@ -10,7 +10,7 @@ const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const timeStampRouter = require('./routes/time-stamp');
 const fileMedatadaMiscroService = require('./routes/file-metadata-microservice');
-
+const urlShortenerMicroservice = require('./routes/url-shortener-microservice');
 
 var app = express();
 
@@ -32,6 +32,8 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/time-stamp', timeStampRouter);
 app.use('/file-metadata-microservice', fileMedatadaMiscroService);
+app.use('/url-shortener-microservice', urlShortenerMicroservice);
+
 
 
 // catch 404 and forward to error handler
