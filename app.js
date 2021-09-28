@@ -1,13 +1,16 @@
+const fileUpload = require('express-fileupload');
+var cookieParser = require('cookie-parser');
 var createError = require('http-errors');
 var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var path = require('path');
 var cors = require('cors');
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const timeStampRouter = require('./routes/time-stamp');
+const fileMedatadaMiscroService = require('./routes/file-metadata-microservice');
+
 
 var app = express();
 
@@ -21,9 +24,15 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(fileUpload({
+  createParentPath: true
+}));
+
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/time-stamp', timeStampRouter);
+app.use('/file-metadata-microservice', fileMedatadaMiscroService);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
