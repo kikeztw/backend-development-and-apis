@@ -1,10 +1,12 @@
+require('dotenv').config()
 const fileUpload = require('express-fileupload');
-var cookieParser = require('cookie-parser');
-var createError = require('http-errors');
-var express = require('express');
-var logger = require('morgan');
-var path = require('path');
-var cors = require('cors');
+const mongoose = require("mongoose");
+const cookieParser = require('cookie-parser');
+const createError = require('http-errors');
+const express = require('express');
+const logger = require('morgan');
+const path = require('path');
+const cors = require('cors');
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
@@ -12,9 +14,16 @@ const timeStampRouter = require('./routes/time-stamp');
 const fileMedatadaMiscroService = require('./routes/file-metadata-microservice');
 const urlShortenerMicroservice = require('./routes/url-shortener-microservice');
 const requestHeaderParserMicroservice = require('./routes/request-header-parser-microservice');
+const exerciseTracker = require('./routes/exercise-tracker');
 
-var app = express();
 
+// Data base connect setup
+mongoose.connect(process.env.DATA_BASE_URL, { useNewUrlParser: true, useUnifiedTopology: true });
+const db = mongoose.connection;
+
+db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+
+const app = express();
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -35,7 +44,7 @@ app.use('/time-stamp', timeStampRouter);
 app.use('/file-metadata-microservice', fileMedatadaMiscroService);
 app.use('/url-shortener-microservice', urlShortenerMicroservice);
 app.use('/request-header-parser-microservice', requestHeaderParserMicroservice);
-
+app.use('/exercise-tracker', exerciseTracker);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -53,4 +62,5 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
+module.mongoose = mongoose;
 module.exports = app;
