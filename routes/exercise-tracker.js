@@ -164,10 +164,6 @@ router.get('/api/users/:_id/logs', async (req, res, next) => {
   res.json(data)
 })  
 
-router.get('/', (req, res) => {
-  res.sendFile(__dirname + '/views/index.html')
-});
-
 router.use((error, req, res, next) => {
   res.status(error.status || 500).send({
     error: {
